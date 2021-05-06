@@ -1,0 +1,79 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Point { double x; double y; };
+
+class Par_function {
+public:
+    Par_function() {}
+    virtual Point calculate(double t) = 0;
+};
+
+class func_1 : public Par_function {
+public:
+    func_1() : Par_function() {}
+    Point calculate(double t) override {
+        Point a;
+        a.x = 2 * t;
+        a.y = 5 * t;
+        return a;
+    };
+};
+
+class func_2 : public Par_function {
+public:
+    func_2() : Par_function() {}
+    Point calculate(double t) override {
+        Point a;
+        a.x = 5 * t;
+        a.y = 7 * t;
+        return a;
+    };
+};
+
+class func_3 : public Par_function {
+public:
+    func_3() : Par_function() {}
+    Point calculate(double t) override {
+        Point a;
+        a.x = 3 * t;
+        a.y = -3 * t;
+        return a;
+    };
+};
+
+class Container {
+private:
+    vector<Par_function*> numbers;
+public:
+    Container() {};
+    void add(Par_function* el) {
+        numbers.push_back(el);
+    }
+    Point sum(double t) {
+        Point a{ 0.0, 0.0 };
+        for (Par_function* el : numbers) {
+            Point buff = el->calculate(t);
+            a.y += buff.y;
+            a.x += buff.x;
+        }
+        return a;
+    }
+};
+
+int main() {
+    int t;
+    cin >> t;
+    Container IBM_5100;
+    func_1 a;
+    func_2 b;
+    func_3 c;
+    IBM_5100.add(&a);
+    IBM_5100.add(&b);
+    IBM_5100.add(&c);
+    Point s = IBM_5100.sum(t);
+    cout << s.x << endl;
+    cout << s.y << endl;
+    return 0;
+}
